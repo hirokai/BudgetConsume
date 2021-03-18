@@ -1,32 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>My Chrome Extension</title>
     <link rel="stylesheet" href="popup.css" />
-</head>
-<body>
-  <div class="app">
-    <p class="counter-label">Counter</p>
-    <div id="counter" class="counter"></div>
-    <div class="button-container">
-      <button id="decrementBtn" class="button">-</button>
-      <button id="incrementBtn" class="button">+</button>
+  </head>
+  <body>
+    <div class="app">
+      <div id="top-tools">
+        <label for="total-aimed">目的の金額</label>
+        <input type="text" id="total-aimed" />
+        <button id="set-total">設定</button>
+        <span style="display: inline-block; width: 50px"></span>
+        <div style="float: right">
+          <button id="clear-list" class="button">クリア</button>
+          <button id="add-to-list" class="button">リストに追加</button>
+        </div>
+      </div>
+
+      <table id="item-list">
+        <thead>
+          <tr>
+            <th>税込価格</th>
+            <th>名前</th>
+            <th>ASIN</th>
+            <th>最大数</th>
+            <th>最適な数</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div id="result-message"></div>
+
+      <hr class="divider" />
+
+      <p class="title">精算アプリ</p>
+      <p class="subtitle">注： 購入前に実際の金額を確認してください。</p>
     </div>
 
-    <hr class="divider" />
+    <script src="popup.js"></script>
 
-    <p class="title">Chrome Extension is Ready!</p>
-    <p class="subtitle">Start by updating <code>popup.html</code></p>
-  </div>
-
-  <script src="popup.js"></script>
-
-  <!--
+    <!--
     This HTML file opens when you click on icon from the toolbar.
 
     To begin the development, run `npm run watch`.
     To create a production bundle, use `npm run build`.
-  -->
-</body>
+  --></body>
 </html>

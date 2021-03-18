@@ -1,7 +1,7 @@
 {
-  "name": "my-extension",
+  "name": "budget-adjustment",
   "version": "0.1.0",
-  "description": "My Chrome Extension",
+  "description": "Adjustment of budget",
   "private": true,
   "scripts": {
     "watch": "webpack --mode=development --watch --config config/webpack.config.js",
