@@ -62,6 +62,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const asin = document.getElementById("ASIN").getAttribute("value")
     const timestamp = Date.now()
     const max_count = 5
+    const min_count = 0
     if (!obj[asin]) {
       obj[asin || "" + timestamp] = {
         price,
@@ -70,6 +71,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         timestamp,
         id,
         max_count,
+        min_count,
       }
       chrome.storage.local.set(obj)
     }

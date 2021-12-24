@@ -47,11 +47,24 @@ import "./popup.css"
           td4.innerHTML = `<a href="https://www.amazon.co.jp/dp/${v.asin}">${v.asin}</a>`
           const a = td4.getElementsByTagName("a")[0]
           a.setAttribute("tabIndex", "-1")
-          const td5 = document.createElement("td")
-          td5.innerHTML = `<input type="number" class="max-count" id="max-count-${v.id}" value="${
-            v.max_count || 1
+          const td5a = document.createElement("td")
+          td5a.innerHTML = `<input type="number" class="min-count" id="min-count-${v.id}" value="${
+            v.min_count != undefined ? v.min_count : 0
           }" min="0">`
-          td5.addEventListener("change", (ev) => {
+          td5a.addEventListener("change", (ev) => {
+            const min_count = +ev.target.value
+            chrome.storage.local.get(v.id, (items) => {
+              const obj = {}
+              obj[v.asin] = { ...v, min_count }
+              // console.log({ v, obj })
+              chrome.storage.local.set(obj)
+            })
+          })
+          const td5b = document.createElement("td")
+          td5b.innerHTML = `<input type="number" class="max-count" id="max-count-${v.id}" value="${
+            v.max_count != undefined ? v.max_count : 1
+          }" min="0">`
+          td5b.addEventListener("change", (ev) => {
             const max_count = +ev.target.value
             chrome.storage.local.get(v.id, (items) => {
               const obj = {}
@@ -64,7 +77,8 @@ import "./popup.css"
           tr.appendChild(td2)
           tr.appendChild(td3)
           tr.appendChild(td4)
-          tr.appendChild(td5)
+          tr.appendChild(td5a)
+          tr.appendChild(td5b)
           tr.appendChild(td1)
           container.appendChild(tr)
         }

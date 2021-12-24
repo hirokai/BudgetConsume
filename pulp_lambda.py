@@ -1,5 +1,11 @@
 import json
+
+# coding: UTF-8
+
+# 線形/整数最適化問題を解くためにPuLPをインポート
 import pulp
+
+# sys.maxsizeでintの最大値を取得するためにインポート
 import sys
 
 
@@ -24,12 +30,12 @@ def run(total, price):
     problem += pulp.lpSum(prices) <= total, "Do not over"
 
     for index in range(len(price)):
+        if len(price[index]) >= 4:
+            # Set minimum
+            problem += y[index] >= price[index][3]
         if len(price[index]) >= 3:
+            # Set maximum
             problem += y[index] <= price[index][2]
-
-    # problem += y[0] <= 1
-    # problem += y[4] <= 2
-    # problem += y[5] <= 2
 
     # 問題の式全部を表示
     print("問題の式")
@@ -56,7 +62,7 @@ def run(total, price):
             print("********")
             print("最適性 = {}".format(pulp.LpStatus[result_status]))
             print("目的関数値 = {}".format(obj))
-            print("　 y = {}".format([int(pulp.value(v)) for v in y]))
+            print("y = {}".format([int(pulp.value(v)) for v in y]))
             print("********")
 
             print("      ", price)
@@ -81,16 +87,16 @@ def test():
     event = {
         "total": 5259,
         "items": [
-            [2880, "Item 1"],
-            [995, "Item 2"],
-            [324, "Item 3"],
-            [851, "Item 4"],
-            [506, "Item 5"],
-            [1799, "Item 6"],
-            [571, "Item 7"],
-            [603, "Item 8"],
-            [955, "Item 9"],
-            [881, "Item 10"],
+            [2880, "https://www.amazon.co.jp/gp/product/B07H3QN5GG"],
+            [995, "https://www.amazon.co.jp/gp/product/B0838JBX9S"],
+            [324, "https://www.amazon.co.jp/gp/product/B000IGXN5A"],
+            [851, "https://www.amazon.co.jp/gp/product/B0029M4814"],
+            [506, "https://www.amazon.co.jp/gp/product/B005J0X11G"],
+            [1799, "https://www.amazon.co.jp/gp/product/B088CWW7Q1"],
+            [571, "https://www.amazon.co.jp/gp/product/B0029M485A"],
+            [603, "https://www.amazon.co.jp/dp/B00LBNM6MK/"],
+            [955, "https://www.amazon.co.jp/dp/B071ZSCMYP"],
+            [881, "https://www.amazon.co.jp/dp/B000CED21S"],
         ],
     }
     vs = run(event["total"], event["items"])

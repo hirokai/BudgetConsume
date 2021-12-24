@@ -36,7 +36,7 @@ chrome.storage.onChanged.addListener(() => {
 
     for (const [k, v] of Object.entries(items)) {
       if (k.indexOf("__") != 0) {
-        data.items.push([v.price, v.id, v.max_count])
+        data.items.push([v.price, v.id, v.max_count, v.min_count || 0])
       }
     }
     const url = "https://979ziepbpc.execute-api.ap-northeast-1.amazonaws.com/default/linear_programming"
@@ -53,7 +53,7 @@ chrome.storage.onChanged.addListener(() => {
       })
       .then((result) => {
         const data = JSON.parse(result.body)
-        console.log("Response from GCP backend", data)
+        console.log("Response from AWS backend", data)
         if (data.count) {
           const obj = {}
           obj["__calculated"] = data.count
