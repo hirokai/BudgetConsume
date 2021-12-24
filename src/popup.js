@@ -14,6 +14,7 @@ import "./popup.css"
     // chrome.storage.local.clear()
 
     chrome.storage.local.get(null, (items) => {
+      const urls = []
       const items2 = []
       for (const [k, v] of Object.entries(items)) {
         items2.push([k, v])
@@ -38,6 +39,7 @@ import "./popup.css"
           td1.innerText = ""
           td1.setAttribute("class", "count")
           td1.setAttribute("id", "count-" + v.id)
+          td1.setAttribute("data-asin", v.asin)
           const td2 = document.createElement("td")
           td2.setAttribute("class", "price")
           td2.innerText = "" + v.price
@@ -81,6 +83,10 @@ import "./popup.css"
           tr.appendChild(td5b)
           tr.appendChild(td1)
           container.appendChild(tr)
+          const calculated_count = items["__calculated"] ? items["__calculated"][v.id] : undefined
+          if (calculated_count && calculated_count > 0) {
+            urls.push(`https://www.amazon.co.jp/dp/${v.asin}`)
+          }
         }
         row_idx += 1
       }
@@ -99,10 +105,16 @@ import "./popup.css"
           }
         }
       }
+      console.log(urls)
       if (items["__calculated"]) {
         const el = document.getElementById("result-message")
         el.setAttribute("class", "green")
-        el.innerText = "解が見つかりました"
+        el.innerHTML = "解が見つかりました <button id='open-tabs'>開く</button>"
+        document.getElementById("open-tabs").addEventListener("click", () => {
+          for (const url of urls) {
+            chrome.tabs.create({ url })
+          }
+        })
       } else {
         const el = document.getElementById("result-message")
         el.setAttribute("class", "red")

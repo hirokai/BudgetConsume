@@ -20,6 +20,7 @@
   "permissions": [
     "activeTab",
     "storage",
+    "tabs",
     "https://979ziepbpc.execute-api.ap-northeast-1.amazonaws.com/*"
   ],
   "content_scripts": [
