@@ -47,7 +47,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // console.log("Message GET_PRICE")
     const price_str = (
       document.getElementById("price_inside_buybox_badge") ||
-      document.getElementById("priceblock_businessprice")
+      document.getElementById("priceblock_businessprice") ||
+      document.querySelector(".a-size-base.a-text-price span")
     ).innerHTML
 
     const m = price_str.match(/[\d,]+/)

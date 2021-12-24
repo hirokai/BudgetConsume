@@ -27,6 +27,13 @@ import "./popup.css"
           //
         } else {
           const tr = document.createElement("tr")
+          const td0 = document.createElement("td")
+          td0.innerText = "x"
+          td0.setAttribute("class", "delete")
+          td0.setAttribute("data-asin", k)
+          td0.addEventListener("click", (ev) => {
+            chrome.storage.local.remove(ev.target.getAttribute("data-asin"))
+          })
           const td1 = document.createElement("td")
           td1.innerText = ""
           td1.setAttribute("class", "count")
@@ -41,9 +48,9 @@ import "./popup.css"
           const a = td4.getElementsByTagName("a")[0]
           a.setAttribute("tabIndex", "-1")
           const td5 = document.createElement("td")
-          td5.innerHTML = `<input type="number" class="max-count" id="max-count-${
-            v.id
-          }" value="${v.max_count || 1}" min="0">`
+          td5.innerHTML = `<input type="number" class="max-count" id="max-count-${v.id}" value="${
+            v.max_count || 1
+          }" min="0">`
           td5.addEventListener("change", (ev) => {
             const max_count = +ev.target.value
             chrome.storage.local.get(v.id, (items) => {
@@ -53,6 +60,7 @@ import "./popup.css"
               chrome.storage.local.set(obj)
             })
           })
+          tr.appendChild(td0)
           tr.appendChild(td2)
           tr.appendChild(td3)
           tr.appendChild(td4)
@@ -84,8 +92,7 @@ import "./popup.css"
       } else {
         const el = document.getElementById("result-message")
         el.setAttribute("class", "red")
-        el.innerText =
-          "解がありません（物品の候補を追加するか，最大数を増やしてください。）"
+        el.innerText = "解がありません（物品の候補を追加するか，最大数を増やしてください。）"
       }
     })
   }
@@ -102,6 +109,10 @@ import "./popup.css"
         },
         (response) => {
           console.log("Got response", response)
+          chrome.storage.local.get(null, function (items) {
+            var allKeys = Object.keys(items)
+            console.log(allKeys)
+          })
         }
       )
     })

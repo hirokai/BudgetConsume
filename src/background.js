@@ -39,8 +39,7 @@ chrome.storage.onChanged.addListener(() => {
         data.items.push([v.price, v.id, v.max_count])
       }
     }
-    const url =
-      "https://979ziepbpc.execute-api.ap-northeast-1.amazonaws.com/default/linear_programming"
+    const url = "https://979ziepbpc.execute-api.ap-northeast-1.amazonaws.com/default/linear_programming"
     fetch(url, {
       method: "POST",
       mode: "cors",
@@ -54,7 +53,7 @@ chrome.storage.onChanged.addListener(() => {
       })
       .then((result) => {
         const data = JSON.parse(result.body)
-        console.log(data)
+        console.log("Response from GCP backend", data)
         if (data.count) {
           const obj = {}
           obj["__calculated"] = data.count
