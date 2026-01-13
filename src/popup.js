@@ -2,6 +2,12 @@
 
 import "./popup.css"
 ;(function () {
+  function requestCalculate() {
+    chrome.runtime.sendMessage({ type: "CALCULATE" }, (res) => {
+      // 任意: デバッグ
+      // console.log("CALCULATE", res, chrome.runtime.lastError)
+    })
+  }
   // We will make use of Storage API to get and store `count` value
   // More information on Storage API can we found at
   // https://developer.chrome.com/extensions/storage
@@ -33,7 +39,7 @@ import "./popup.css"
           td0.setAttribute("class", "delete")
           td0.setAttribute("data-asin", k)
           td0.addEventListener("click", (ev) => {
-            chrome.storage.local.remove(ev.target.getAttribute("data-asin"))
+            chrome.storage.local.remove(ev.target.getAttribute("data-asin"), requestCalculate)
           })
           const td1 = document.createElement("td")
           td1.innerText = ""
@@ -59,7 +65,7 @@ import "./popup.css"
               const obj = {}
               obj[v.asin] = { ...v, min_count }
               // console.log({ v, obj })
-              chrome.storage.local.set(obj)
+              chrome.storage.local.set(obj, requestCalculate)
             })
           })
           const td5b = document.createElement("td")
@@ -72,7 +78,7 @@ import "./popup.css"
               const obj = {}
               obj[v.asin] = { ...v, max_count }
               // console.log({ v, obj })
-              chrome.storage.local.set(obj)
+              chrome.storage.local.set(obj, requestCalculate)
             })
           })
           tr.appendChild(td0)
@@ -135,10 +141,7 @@ import "./popup.css"
         },
         (response) => {
           console.log("Got response", response)
-          chrome.storage.local.get(null, function (items) {
-            var allKeys = Object.keys(items)
-            console.log(allKeys)
-          })
+          setTimeout(requestCalculate, 0)
         }
       )
     })
@@ -148,13 +151,13 @@ import "./popup.css"
     chrome.storage.local.get(["__total"], (d) => {
       console.log({ d })
       chrome.storage.local.clear()
-      chrome.storage.local.set({ __total: 10000 })
+      chrome.storage.local.set({ __total: 10000 }, requestCalculate)
     })
   }
 
   function setTotal() {
     const total = +document.getElementById("total-aimed").value
-    chrome.storage.local.set({ __total: total })
+    chrome.storage.local.set({ __total: total },requestCalculate)
   }
 
   document.addEventListener("DOMContentLoaded", restoreItemList)
